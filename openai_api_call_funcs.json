@@ -1,0 +1,48 @@
+{"functions": [
+    {
+      "name": "statements",
+      "description": "The statements list",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "statements": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "A list of statement"
+          }
+        },
+        "required": ["statements"]
+      }
+    },
+    {
+        "name": "filter",
+        "description": "Evaluate whether the described agent would agree with the given statement",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "answers": {
+              "type": "boolean",
+              "description": "Answer to the evaluation question"
+            }
+          },
+          "required": ["answer"]
+        }
+      },
+      {
+        "name": "evaluation",
+        "description": "Answer to the question.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "answer": {
+              "type": "boolean",
+              "description": "The answer."
+            }
+          },
+          "required": ["answer"]
+        }
+      }
+  ]
+}
