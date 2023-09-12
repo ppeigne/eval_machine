@@ -107,7 +107,7 @@ full_zero_shot_eval(template=template,
                     template_params=template_parameters,
                     functions=functions,
                     agreement=True,
-                    n_evals=10)
+                    n_evals=1)
 
 full_zero_shot_eval(template=template,
                     eval_template=eval_template,
@@ -115,4 +115,4 @@ full_zero_shot_eval(template=template,
                     template_params=template_parameters,
                     functions=functions,
                     agreement=False,
-                    n_evals=10)
+                    n_evals=1)

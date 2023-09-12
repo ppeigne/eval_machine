@@ -1,4 +1,4 @@
-from config import config
+from src.config import config
 
 from typing import Optional, Any, Union
 from itertools import compress
@@ -58,54 +58,54 @@ def generate_from_template(template: str,
     else:          
           return chain.invoke(params)
 
-# 1. Generate statements based on the attributes of the described agent
-statements: list[str] = generate_from_template(template=template,
-                                    params=template_parameters,
-                                    functions=functions,
-                                    function_call={"name": "statements"},
-                                    model=ChatOpenAI(
-                                      openai_api_key=config["openai_api_key"],
-                                      model="gpt-4",
-                                      temperature=1,
-                                    ),
-                                    parser=JsonKeyOutputFunctionsParser(key_name="statements"),
-                                    batch_param=None)
-print(statements)
+# # 1. Generate statements based on the attributes of the described agent
+# statements: list[str] = generate_from_template(template=template,
+#                                     params=template_parameters,
+#                                     functions=functions,
+#                                     function_call={"name": "statements"},
+#                                     model=ChatOpenAI(
+#                                       openai_api_key=config["openai_api_key"],
+#                                       model="gpt-4",
+#                                       temperature=1,
+#                                     ),
+#                                     parser=JsonKeyOutputFunctionsParser(key_name="statements"),
+#                                     batch_param=None)
+# print(statements)
 
-# 2. Evaluate the generated statements 
-evaluated_statements: list[bool] = generate_from_template(template=filter_template,
-                                              params=template_parameters,
-                                              functions=functions,
-                                              function_call={"name": "filter"},
-                                              model=ChatOpenAI(
-                                                openai_api_key=config["openai_api_key"],
-                                                model="gpt-4",
-                                                temperature=0,
-                                              ),
-                                              parser=JsonKeyOutputFunctionsParser(key_name="answers"),
-                                              batch_param=("statement", statements))
-print(evaluated_statements)
+# # 2. Evaluate the generated statements 
+# evaluated_statements: list[bool] = generate_from_template(template=filter_template,
+#                                               params=template_parameters,
+#                                               functions=functions,
+#                                               function_call={"name": "filter"},
+#                                               model=ChatOpenAI(
+#                                                 openai_api_key=config["openai_api_key"],
+#                                                 model="gpt-4",
+#                                                 temperature=0,
+#                                               ),
+#                                               parser=JsonKeyOutputFunctionsParser(key_name="answers"),
+#                                               batch_param=("statement", statements))
+# print(evaluated_statements)
 
-# 2.1 Filter the statements based on the evaluation 
-filtered_statements: list[str] = list(compress(statements, evaluated_statements))
-print(filtered_statements)
+# # 2.1 Filter the statements based on the evaluation 
+# filtered_statements: list[str] = list(compress(statements, evaluated_statements))
+# print(filtered_statements)
 
-# 3. Evaluate the model behavior based on the generated statements
-model_answers: list[bool] = generate_from_template(template=eval_template,
-                                                    params=template_parameters,
-                                                    functions=functions,
-                                                    function_call={"name": "evaluation"},
-                                                    model=ChatOpenAI(
-                                                      openai_api_key=config["openai_api_key"],
-                                                      model="gpt-4",
-                                                      temperature=0,
-                                                    ),
-                                                    parser=JsonKeyOutputFunctionsParser(key_name="answer"),
-                                                    batch_param=("statement", filtered_statements))                                           
-print(model_answers)
+# # 3. Evaluate the model behavior based on the generated statements
+# model_answers: list[bool] = generate_from_template(template=eval_template,
+#                                                     params=template_parameters,
+#                                                     functions=functions,
+#                                                     function_call={"name": "evaluation"},
+#                                                     model=ChatOpenAI(
+#                                                       openai_api_key=config["openai_api_key"],
+#                                                       model="gpt-4",
+#                                                       temperature=0,
+#                                                     ),
+#                                                     parser=JsonKeyOutputFunctionsParser(key_name="answer"),
+#                                                     batch_param=("statement", filtered_statements))                                           
+# print(model_answers)
 
-# Store the results in a json file
-with open('results.json', 'w') as f:
-    json.dump({"results": statements,
-               "filtered_results": filtered_statements,
-               "answers": model_answers}, f)
+# # Store the results in a json file
+# with open('results.json', 'w') as f:
+#     json.dump({"results": statements,
+#                "filtered_results": filtered_statements,
+#                "answers": model_answers}, f)
